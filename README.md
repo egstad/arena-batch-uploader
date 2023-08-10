@@ -51,3 +51,11 @@ This was built with Node v20.5.0 (npm v9.8.0).
 - [Vite](https://github.com/vitejs/vite): Dev server and build tool.
 - [Arena-js](https://github.com/ivangreene/arena-js): A javascript wrapper for the are.na api, built by [@ivangreene](https://github.com/ivangreene) (thanks, mate!)
 - [Fuse.js](https://github.com/krisk/Fuse): Lightweight fuzzy-search.
+
+## So, why does this tool exist anyways?
+
+Ummm hi, me [Jordan Egstad](https://github.com/egstad) name-o. I'm a [designerd](https://egstad.com) who enjoys collecting and connecting digital things. Once upon a time I found myself with a few thousand images that I wanted to add to my are.na. Sure, I could have dragged and dropped them into a channel (I did), but I quickly noticed that a key artifact was lost: credit to the original sources. Entering citations would have taken me days, so I spent an afternoon to make this instead. Is it helpful? Yes. Was it fun to make? Sorta. Is it ugly? Kinda but I like it!.
+
+Hope it's helpful to you.
+
+Egstad
