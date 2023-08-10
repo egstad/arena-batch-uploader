@@ -6,9 +6,7 @@
 
 > **⚠️ An important request**: Please don't be a butt-faced weirdo and abuse this tool by spamming open are.na channels. If you do, god _(and [me](https://github.com/egstad))_ will find out, this repo will be forced to go private, and a small corner of hell will be reserved specifically for your foolish soul. **Please don't ruin this for us. _Thank yew!_**
 
-Now that that's out of the way...
-
-To use this tool, you'll only need one thing: a properly formatted `json` file. What's the format? Easy... an array of objects. What's the shape of those objects you might ask?...
+Now that that's out of the way... To use this tool, you'll only need one thing: a properly formatted `json` file. What's the format? Easy... an array of objects. What's the shape of those objects you might ask?...
 
 ```json
 [
