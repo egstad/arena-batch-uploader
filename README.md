@@ -42,7 +42,7 @@ npm run dev
 
 ## Techincal Notes
 
-This was built with Node v20.5.0 (npm v9.8.0).
+This was built with Node `v20.5.0` (npm `v9.8.0`).
 
 ### Libraries Used
 
@@ -52,8 +52,10 @@ This was built with Node v20.5.0 (npm v9.8.0).
 
 ## So, why does this tool exist anyways?
 
-Ummm hi, me [Jordan Egstad](https://github.com/egstad) name-o. I'm a [designerd](https://egstad.com) who enjoys collecting and connecting digital things. Once upon a time I found myself with a few thousand images that I wanted to add to my are.na. Sure, I could have dragged and dropped them into a channel (I did), but I quickly noticed that a key artifact was lost: credit to the original sources. Entering citations would have taken me days, so I spent an afternoon to make this instead. Is it helpful? Yes. Was it fun to make? Sorta. Is it ugly? Kinda but I like it!.
+Ummm hi, me [Jordan Egstad](https://github.com/egstad) name-o. I'm a [designerd](https://egstad.com) who enjoys finding, collecting, and sharing things on the web for others to enjoy. Once upon a time I found myself with a few thousand images that I wanted to add to my are.na. Sure, I could have dragged and dropped them into a channel (I did), but I quickly noticed that a key artifact was lost: credit to the original sources. Very bad, no good! Contributing credit where credit is due is important! Entering these citations would have taken me days, so I spent an afternoon to make this instead. Is it helpful? Yes. Was it fun to make? Sorta. Is it ugly? Kinda but I like it!.
 
-Hope it's helpful to you.
+Pro tip: I'd recommend using python to take your data and shape it into the JSON format listed above. It'll make quick work of a large dataset — whether its a `csv`, `txt`, etc. Maybe you haven't used python before. If so, I promise you can learn enough to be dangerous in an afternoon. I'm living proof.
+
+Hope this is somehow helpful to you. Toodles!
 
 Egstad
