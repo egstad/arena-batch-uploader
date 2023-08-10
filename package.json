@@ -12,10 +12,13 @@
     "@vueuse/integrations": "^10.3.0",
     "are.na": "^0.1.5",
     "fuse.js": "^6.6.2",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vue-fuse": "^4.1.1"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
+    "naive-ui": "^2.34.4",
+    "sass": "^1.65.1",
     "vite": "^4.4.5"
   }
 }

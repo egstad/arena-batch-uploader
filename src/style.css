@@ -1,44 +1,11 @@
 :root {
-  background: black;
-  color: white;
-  font-family: sans-serif;
-  font-size: clamp(12px, 2vw, 24px);
-  line-height: 2;
-}
+  font-family: "Arial", sans-serif;
+  line-height: 1.5rem;
 
-input,
-button {
-  font-size: inherit;
-  appearance: none;
-  display: block;
-  width: 100%;
-}
+  --background: black;
+  --foreground: rgba(200, 200, 200);
+  --border: rgba(70, 65, 65);
 
-input::placeholder {
-  color: inherit;
-  opacity: 0.5;
-}
-
-td pre {
-  display: inline;
-  line-height: inherit;
-  background-color: darkslategray;
-  padding: 0.05em 0.5em;
-  border-radius: 100vw;
-}
-
-table {
-  width: 100%;
-}
-
-td {
-  border-top: 1px solid white;
-}
-
-td input {
-  max-width: 320px;
-}
-
-tr td:first-child {
-  width: 30%;
+  background: var(--background);
+  color: var(--foreground);
 }
