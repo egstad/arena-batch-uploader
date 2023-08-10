@@ -1,6 +1,6 @@
 # Are.na Batch Uploader
 
-> A tool that takes your cute lil `JSON` file and batch uploads them as blocks to an [are.na](are.na) channel.
+> A tool that takes your cute lil `JSON` file and batch uploads its contents as blocks to an [are.na](are.na) channel.
 
 ## **Requirements**: Hold ya damn horsies
 
