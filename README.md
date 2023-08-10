@@ -1,4 +1,4 @@
-# Are.na Batch Uploader
+# ![](https://raw.githubusercontent.com/egstad/arena-batch-uploader/e9cc238f5e79bad037257cc65c05e270bf1eb9a1/src/assets/arena-logo.svg)Are.na Batch Uploader
 
 > A tool that takes your cute lil `JSON` file and batch uploads its contents as blocks to an [are.na](are.na) channel.
 
