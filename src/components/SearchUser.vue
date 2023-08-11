@@ -1,26 +1,36 @@
 <template>
   <div>
     <div style="display: flex">
-      <n-input-group>
-        <n-input
-          autofocus
-          placeholder="john-doe"
-          :status="userValidityStatus"
-          :on-input="onUserInput"
-          :on-clear="onUserClear"
-          @keyup.enter="checkIfUserExists"
-          clearable
-        >
-          <template #prefix>
-            <span style="opacity: 0.5; margin-right: -0.125rem"
-              >are.na/</span
-            ></template
-          ></n-input
-        >
-        <n-button :type="userValidityStatus" @click="checkIfUserExists"
-          >Search</n-button
-        >
-      </n-input-group>
+      <n-tooltip
+        placement="top-start"
+        trigger="manual"
+        :delay="100"
+        :duration="5000"
+      >
+        <template #trigger>
+          <n-input
+            autofocus
+            placeholder="john-doe"
+            :status="userValidityStatus"
+            :on-input="onUserInput"
+            :on-clear="onUserClear"
+            @keyup.enter="checkIfUserExists"
+            style="margin-right: 0.5rem"
+            clearable
+          >
+            <template #prefix>
+              <span style="opacity: 0.5; margin-right: -0.125rem"
+                >are.na/</span
+              ></template
+            ></n-input
+          >
+        </template>
+        {{ errorMessage }}
+      </n-tooltip>
+
+      <n-button :type="userValidityStatus" @click="checkIfUserExists"
+        >Search</n-button
+      >
     </div>
 
     <div v-if="user" class="user-meta">
@@ -42,21 +52,14 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import {
-  NButton,
-  NInput,
-  NAvatar,
-  NTag,
-  NTime,
-  NInputGroup,
-  NInputGroupLabel,
-} from "naive-ui";
+import { NButton, NInput, NAvatar, NTag, NTime, NTooltip } from "naive-ui";
 import Arena from "are.na";
 
 const user = ref(null);
 const userInput = ref(undefined);
 const userIsValid = ref(undefined);
 const userIsLoading = ref(false);
+const errorMessage = ref(null);
 
 defineExpose({
   user,
@@ -86,9 +89,10 @@ const checkIfUserExists = () => {
       userIsLoading.value = false;
     })
     .catch((err) => {
+      user.value = undefined;
       userIsLoading.value = false;
       userIsValid.value = false;
-      alert(err);
+      errorMessage.value = err;
     });
 };
 

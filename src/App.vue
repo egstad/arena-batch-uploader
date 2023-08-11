@@ -1,24 +1,25 @@
 <script setup>
 import { ref, toRaw } from "vue";
-// import Channels from "./components/Channels.vue";
-import Upload from "./components/Upload.vue";
+// import Upload from "./components/Upload.vue";
 import { darkTheme } from "naive-ui";
 import { NConfigProvider } from "naive-ui";
 import SearchUser from "./components/SearchUser.vue";
 import SearchChannel from "./components/SearchChannel.vue";
+import AccessToken from "./components/AccessToken.vue";
 
 const user = ref(null);
 const channel = ref(null);
+const token = ref(null);
 
-const selectedChannel = ref(null);
-const onChannelSelected = (channel) => {
-  selectedChannel.value = channel;
-};
+// const selectedChannel = ref(null);
+// const onChannelSelected = (channel) => {
+//   selectedChannel.value = channel;
+// };
 
-const fileSelected = ref(null);
-const onFileSelected = (channel) => {
-  fileSelected.value = toRaw(channel);
-};
+// const fileSelected = ref(null);
+// const onFileSelected = (channel) => {
+//   fileSelected.value = toRaw(channel);
+// };
 </script>
 
 <template>
@@ -54,8 +55,20 @@ const onFileSelected = (channel) => {
         </div>
 
         <div class="row" v-if="channel?.channel">
-          <h2>Enter Access Token</h2>
-          <p>Ente here...</p>
+          <h2>
+            <span v-if="!channel?.channel">Enter personal access token.</span>
+            <s v-else style="opacity: 0.5">Enter personal access token.</s>
+          </h2>
+
+          <AccessToken ref="token" />
+        </div>
+
+        <div class="row" v-if="token?.token">
+          <h2>
+            <span>Add JSON file</span>
+          </h2>
+
+          <div></div>
         </div>
 
         <!-- <table>

@@ -1,18 +1,25 @@
 <template>
   <div>
-    <n-select
-      size="small"
-      placeholder="Search channel..."
-      v-model="search"
-      @update:value="handleUpdate"
-      :render-label="renderLabel"
-      :render-tag="renderSingleSelectTag"
-      :options="channels"
-      filterable
-      clearable
-    />
+    <div style="display: flex">
+      <n-select
+        placeholder="Search channel..."
+        v-model="search"
+        @update:value="handleUpdate"
+        :options="channels"
+        filterable
+        clearable
+      />&nbsp;
+      <n-button type="default" v-if="user?.user"
+        ><a
+          :href="`https://are.na/${user.user.user.slug}/${channel?.slug}`"
+          target="_blank"
+          style="text-decoration: none"
+          >Visit Channel</a
+        ></n-button
+      >
+    </div>
 
-    <div v-if="channel">
+    <template v-if="channel">
       <div class="channel-meta">
         <n-tag size="small">Privacy: {{ channel.status }}</n-tag>
         <n-tag size="small">
@@ -24,25 +31,40 @@
         <n-tag size="small" type="error" v-if="channel['nsfw?']">NSFW</n-tag>
       </div>
 
-      <n-grid :cols="5">
-        <n-grid-item v-for="content in channel.contents">
+      <!-- <div style="display: flex; margin-top: 4rem">
+        <div v-for="content in channel.contents">
           <img
             v-if="content.class === 'Image'"
-            :src="content.image.large.url"
-            style="display: flex; width: 100%; height: auto"
-            alt=""
+            :src="content.image.square.url"
+            width="80"
+            lazy
           />
-          <!-- <pre>{{ content }}</pre> -->
-        </n-grid-item>
-      </n-grid>
-    </div>
+          <div v-else-if="content.class === 'Attachment'">
+            <n-image :src="content.image.square.url" width="80" lazy />
+          </div>
+          <div v-else>
+            <small style="font-size: 0.75rem; line-height: 1rem">
+              {{ content.content }}
+            </small>
+          </div>
+        </div>
+      </div> -->
+    </template>
   </div>
 </template>
 
 <script setup>
 import Arena from "are.na";
-import { ref, onMounted, computed, watch, h } from "vue";
-import { NSelect, NText, NTag, NTime, NGrid, NGridItem } from "naive-ui";
+import { ref, onMounted, h } from "vue";
+import {
+  NSelect,
+  NTag,
+  NButton,
+  NTime,
+  NGrid,
+  NGridItem,
+  NImage,
+} from "naive-ui";
 
 const user = defineProps(["user"]);
 const channel = ref();
@@ -72,7 +94,11 @@ const fetchAllChannelsByUserID = (userID) => {
       contents.map((channel, index) => {
         channels.value.push({
           label: channel.title,
+          // this is the bitch that causes errors
           value: { ...channel },
+          // naive-ui wants this to be a string.
+          // could do this and thins parse as json later...
+          // value: JSON.stringify({ ...channel }),
         });
       });
 
@@ -101,58 +127,8 @@ onMounted(() => fetchAllChannelsByUserID(user.user.user.id));
 const search = ref(undefined);
 
 const handleUpdate = (newVal) => {
-  // search.value = newVal;
   channel.value = newVal;
   isLoading.value = false;
-  console.log(newVal);
-};
-
-const renderLabel = (option) => {
-  return h(
-    "div",
-    {
-      style: {
-        display: "flex",
-        alignItems: "center",
-        margin: "0.5rem 0",
-      },
-    },
-    [
-      h("div", [
-        h("div", null, [option.label]),
-        h(
-          NText,
-          {
-            depth: 3,
-            tag: "div",
-            style: {
-              fontSize: "0.75rem",
-              lineHeight: "1rem",
-            },
-          },
-
-          {
-            default: (foo) => {
-              return `${option.value.length} blocks`;
-            },
-          }
-        ),
-      ]),
-    ]
-  );
-};
-
-const renderSingleSelectTag = ({ option }) => {
-  return h(
-    "div",
-    {
-      style: {
-        display: "flex",
-        alignItems: "center",
-      },
-    },
-    [option.label]
-  );
 };
 </script>
 
