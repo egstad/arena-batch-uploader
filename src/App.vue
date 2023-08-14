@@ -6,20 +6,14 @@ import { NConfigProvider } from "naive-ui";
 import SearchUser from "./components/SearchUser.vue";
 import SearchChannel from "./components/SearchChannel.vue";
 import AccessToken from "./components/AccessToken.vue";
+import File from "./components/File.vue";
+import Upload from "./components/Upload.vue";
 
 const user = ref(null);
 const channel = ref(null);
 const token = ref(null);
-
-// const selectedChannel = ref(null);
-// const onChannelSelected = (channel) => {
-//   selectedChannel.value = channel;
-// };
-
-// const fileSelected = ref(null);
-// const onFileSelected = (channel) => {
-//   fileSelected.value = toRaw(channel);
-// };
+const file = ref(null);
+const upload = ref(null);
 </script>
 
 <template>
@@ -56,7 +50,7 @@ const token = ref(null);
 
         <div class="row" v-if="channel?.channel">
           <h2>
-            <span v-if="!channel?.channel">Enter personal access token.</span>
+            <span v-if="!token?.token">Enter personal access token.</span>
             <s v-else style="opacity: 0.5">Enter personal access token.</s>
           </h2>
 
@@ -65,42 +59,30 @@ const token = ref(null);
 
         <div class="row" v-if="token?.token">
           <h2>
-            <span>Add JSON file</span>
+            <span v-if="!token?.token">Select a file</span>
+            <s v-else style="opacity: 0.5">Select a file</s>
           </h2>
 
-          <div></div>
+          <div>
+            <File ref="file" />
+          </div>
         </div>
 
-        <!-- <table>
+        <div class="row" v-if="file?.jsonData?.length">
+          <h2>
+            <span>Confirm batch</span>
+          </h2>
 
-        <tr v-if="selectedChannel">
-          <td>2. Select a JSON file.</td>
-          <td><File @fileSelected="onFileSelected" /></td>
-        </tr>
-
-        <tr v-if="fileSelected && selectedChannel">
-          <td>3. Press the red button.</td>
-          <td>
-            You are about to add
-            <pre>{{ fileSelected.length }}</pre>
-            posts to the "
-            <pre>{{ selectedChannel }}</pre>
-            " channel. You cool with that?
-          </td>
-        </tr>
-      </table> -->
+          <div>
+            <Upload
+              :json-data="file?.jsonData"
+              :channel-title="channel?.channel?.title"
+              :access-token="token"
+              ref="upload"
+            />
+          </div>
+        </div>
       </section>
-
-      <!-- <button class="big-red" v-if="fileSelected && selectedChannel">
-        FUCKING SEND IT!
-      </button> -->
-
-      <!-- <div>
-        <Upload
-          @channelSelected="onChannelSelected"
-          :json-data="fileSelected"
-        />
-      </div> -->
     </main>
   </n-config-provider>
 </template>
@@ -122,6 +104,7 @@ main {
   line-height: 1.25rem;
   margin-top: 1rem;
   margin-bottom: 5rem;
+  min-height: 100px;
 
   // left column
   *:first-child {
