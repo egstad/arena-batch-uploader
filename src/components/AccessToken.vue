@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, watch, onMounted, onBeforeMount } from "vue";
+import { ref, watch, onMounted, onBeforeMount } from "vue";
 import { NInput } from "naive-ui";
 
 const token = ref(undefined);
