@@ -40,6 +40,10 @@ npm install
 npm run dev
 ```
 
+## Step-by-step walkthrough
+
+[![Now in Android: 55](https://raw.githubusercontent.com/egstad/arena-batch-uploader/main/public/walkthrough-thumbnail.png?token=GHSAT0AAAAAACGESEPEE6KAYRVJZCMNUCKUZG32D5Q)](https://www.loom.com/share/d1251cffa4674af99dd64eafc61810d2?sid=08c32871-7ba7-40bf-b19b-28079fa17bfb "Are.na Batch Uploader: 101")
+
 ## Techincal Notes
 
 This was built with Node `v20.5.0` (npm `v9.8.0`).
