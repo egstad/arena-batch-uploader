@@ -48,7 +48,7 @@ This was built with Node `v20.5.0` (npm `v9.8.0`).
 
 - [Vite](https://github.com/vitejs/vite): Dev server and build tool.
 - [Arena-js](https://github.com/ivangreene/arena-js): A javascript wrapper for the are.na api, built by [@ivangreene](https://github.com/ivangreene) (thanks, mate!)
-- [Fuse.js](https://github.com/krisk/Fuse): Lightweight fuzzy-search.
+- [Naive UI](https://github.com/tusen-ai/naive-ui): A Vue 3 Component Library.
 
 ## So, why does this tool exist anyways?
 
