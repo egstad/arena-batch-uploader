@@ -19,18 +19,20 @@
       >
     </div>
 
-    <template v-if="channel">
-      <div class="channel-meta">
-        <n-tag size="small">Privacy: {{ channel.status }}</n-tag>
-        <n-tag size="small">
-          Created
-          <n-time :time="new Date(channel.created_at)" type="relative" />
-        </n-tag>
-        <n-tag size="small">{{ channel.follower_count }} followers</n-tag>
-        <n-tag size="small">{{ channel.length }} blocks</n-tag>
-        <n-tag size="small" type="error" v-if="channel['nsfw?']">NSFW</n-tag>
-      </div>
-    </template>
+    <Transition>
+      <template v-if="channel">
+        <div class="channel-meta">
+          <n-tag size="small">Privacy: {{ channel.status }}</n-tag>
+          <n-tag size="small">
+            Created
+            <n-time :time="new Date(channel.created_at)" type="relative" />
+          </n-tag>
+          <n-tag size="small">{{ channel.follower_count }} followers</n-tag>
+          <n-tag size="small">{{ channel.length }} blocks</n-tag>
+          <n-tag size="small" type="error" v-if="channel['nsfw?']">NSFW</n-tag>
+        </div>
+      </template>
+    </Transition>
   </div>
 </template>
 

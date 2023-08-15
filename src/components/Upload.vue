@@ -1,70 +1,93 @@
 <template>
-  <div>
-    <p>
-      Are you sure you'd like to add <strong>{{ jsonData.length }}</strong> new
-      blocks to the "<strong>{{ channel.channel.title }}</strong
-      >" channel?
-    </p>
-    <n-input-group>
-      <n-input-number
-        placeholder="1000"
-        :default-value="throttleDuration"
-        @update:value="onThrottleUpdate"
-      >
-        <template #prefix>
-          <span style="opacity: 0.5">Throttle duration in ms:</span>
-        </template>
-      </n-input-number>
-      <n-button
-        v-if="!uploading"
-        @click="upload(channel.channel.slug)"
-        type="success"
-        >Confirm upload</n-button
-      >
-      <n-button v-else @click="uploading = false" type="error"
-        >Pause upload</n-button
-      >
-    </n-input-group>
+  <div style="padding-bottom: 6rem">
+    <Transition mode="out-in">
+      <p v-if="!uploadIsComplete" style="padding: 6px 0">
+        Are you sure you'd like to add
+        <strong>{{ jsonData.length }}</strong> new blocks to the "<strong>{{
+          channel.channel.title
+        }}</strong
+        >" channel?
+      </p>
+      <div v-else style="padding: 6px 0">
+        <p>Upload is complete.</p>
+        <n-button>
+          <a
+            :href="`https://are.na/${user?.user?.slug}/${channel?.channel?.slug}`"
+            target="_blank"
+            style="text-decoration: none"
+            >View Channel</a
+          ></n-button
+        >
+      </div>
+    </Transition>
 
-    <p v-if="payload.jsonData">
-      <span v-if="payload.jsonData.length - downloaded !== 0"
-        >{{ payload.jsonData.length - downloaded }} /
-        {{ payload.jsonData.length }} Remaining</span
-      >
-      <span v-else>Complete! <a href="">View Channel</a></span>
-      <br /><br />
-    </p>
-    <n-collapse v-if="successes.length || errors.length">
-      <n-collapse-item
-        :title="`Successful Uploads: ${successes.length}`"
-        name="1"
-      >
-        <n-data-table
-          pagination-behavior-on-filter="current"
-          :columns="statusColumns"
-          :data="successes"
-          :pagination="{ pageSize: 7 }"
-        />
-      </n-collapse-item>
-      <n-collapse-item
-        v-if="errors.length"
-        :title="`Errors: ${errors.length}`"
-        name="2"
-      >
-        <div v-for="error in errors">
-          <span>{{ error.error }}</span>
-          <br />
-          <code>
-            <pre>{{ error.payload }}</pre>
-          </code>
-        </div>
-      </n-collapse-item>
-    </n-collapse>
+    <Transition mode="out-in">
+      <n-input-group v-if="!uploadIsComplete">
+        <n-input-number
+          placeholder="1000"
+          :default-value="throttleDuration"
+          @update:value="onThrottleUpdate"
+        >
+          <template #prefix>
+            <span style="opacity: 0.5">Throttle duration in ms:</span>
+          </template>
+        </n-input-number>
+        <n-button
+          v-if="!uploading"
+          @click="upload(channel.channel.slug)"
+          type="success"
+          >Confirm upload</n-button
+        >
+        <n-button v-else @click="uploading = false" type="error"
+          >Pause upload</n-button
+        >
+      </n-input-group>
+    </Transition>
+
+    <Transition>
+      <p v-if="payload.jsonData && !uploadIsComplete">
+        <span
+          >{{ payload.jsonData.length - downloaded }} /
+          {{ payload.jsonData.length }} Remaining</span
+        >
+      </p>
+    </Transition>
+
+    <Transition>
+      <div v-if="!uploadIsComplete && errors.length === 0">
+        <n-collapse v-if="successes.length || errors.length">
+          <n-collapse-item
+            :title="`Successful Uploads: ${successes.length}`"
+            name="1"
+          >
+            <n-data-table
+              pagination-behavior-on-filter="current"
+              :columns="statusColumns"
+              :data="successes"
+              :pagination="{ pageSize: 7 }"
+            />
+          </n-collapse-item>
+          <n-collapse-item
+            v-if="errors.length"
+            :title="`Errors: ${errors.length}`"
+            name="2"
+          >
+            <div v-for="error in errors">
+              <span>{{ error.error }}</span>
+              <br />
+              <code>
+                <pre>{{ error.payload }}</pre>
+              </code>
+            </div>
+          </n-collapse-item>
+        </n-collapse>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <script setup>
-import { ref, toRaw, computed } from "vue";
+import { ref, toRaw, watch } from "vue";
 import {
   NButton,
   NInputNumber,
@@ -76,11 +99,12 @@ import {
 import Arena from "are.na";
 
 const arena = new Arena({ accessToken: localStorage.token });
-const payload = defineProps(["json-data", "channel", "accessToken"]);
+const payload = defineProps(["json-data", "channel", "accessToken", "user"]);
 const downloaded = ref(0);
 const successes = ref([]);
 const errors = ref([]);
 const uploading = ref(false);
+const uploadIsComplete = ref(false);
 
 const upload = async (channel) => {
   const blocks = toRaw(payload.jsonData);
@@ -140,6 +164,14 @@ const statusColumns = [
 
 const throttleDuration = ref(2000);
 const onThrottleUpdate = (val) => (throttleDuration.value = val);
+
+watch(downloaded, (newVal) => {
+  if (payload.jsonData.length - newVal !== 0) {
+    uploadIsComplete.value = false;
+  } else {
+    uploadIsComplete.value = true;
+  }
+});
 </script>
 
 <style scoped>

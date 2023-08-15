@@ -48,20 +48,22 @@
       </template>
     </div>
 
-    <div v-if="user" class="user-meta">
-      <n-avatar
-        v-if="!user.avatar.includes('gravatar')"
-        :src="user.avatar"
-        size="tiny"
-        lazy
-      />
-      <n-tag size="small" v-if="user.is_premium">Premium User</n-tag>
-      <n-tag size="small">{{ user.channel_count }} channels</n-tag>
-      <n-tag size="small">
-        Registered
-        <n-time :time="new Date(user.created_at)" type="relative" />
-      </n-tag>
-    </div>
+    <Transition>
+      <div v-if="user" class="user-meta">
+        <n-avatar
+          v-if="!user.avatar.includes('gravatar')"
+          :src="user.avatar"
+          size="tiny"
+          lazy
+        />
+        <n-tag size="small" v-if="user.is_premium">Premium User</n-tag>
+        <n-tag size="small">{{ user.channel_count }} channels</n-tag>
+        <n-tag size="small">
+          Registered
+          <n-time :time="new Date(user.created_at)" type="relative" />
+        </n-tag>
+      </div>
+    </Transition>
   </div>
 </template>
 
