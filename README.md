@@ -2,6 +2,8 @@
 
 > A tool that takes your cute lil `JSON` file and batch uploads its contents as blocks to an [are.na](are.na) channel.
 
+[!["Are.na Batch Uploader](https://egstad.link/images/arena-batch-uploader/og.png)](https://arena-batch-uploader.netlify.app/ "Are.na Batch Uploader")
+
 ## **Requirements**: Hold ya damn horsies
 
 > **⚠️ An important request**: Please don't be a butt-faced weirdo and abuse this tool by spamming open are.na channels. If you do, god _(and [me](https://github.com/egstad))_ will find out, this repo will be forced to go private, and a small corner of hell will be reserved specifically for your foolish soul. **Please don't ruin this for us. _Thank yew!_**
@@ -42,7 +44,7 @@ npm run dev
 
 ## Step-by-step walkthrough
 
-[![Now in Android: 55](https://raw.githubusercontent.com/egstad/arena-batch-uploader/main/public/walkthrough-thumbnail.png?token=GHSAT0AAAAAACGESEPEE6KAYRVJZCMNUCKUZG32D5Q)](https://www.loom.com/share/d1251cffa4674af99dd64eafc61810d2?sid=08c32871-7ba7-40bf-b19b-28079fa17bfb "Are.na Batch Uploader: 101")
+[![Are.na Batch Uploader: 101](https://raw.githubusercontent.com/egstad/arena-batch-uploader/main/public/walkthrough-thumbnail.png?token=GHSAT0AAAAAACGESEPEE6KAYRVJZCMNUCKUZG32D5Q)](https://www.loom.com/share/d1251cffa4674af99dd64eafc61810d2?sid=08c32871-7ba7-40bf-b19b-28079fa17bfb "Are.na Batch Uploader: 101")
 
 ## Techincal Notes
 
