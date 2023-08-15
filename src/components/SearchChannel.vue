@@ -30,41 +30,14 @@
         <n-tag size="small">{{ channel.length }} blocks</n-tag>
         <n-tag size="small" type="error" v-if="channel['nsfw?']">NSFW</n-tag>
       </div>
-
-      <!-- <div style="display: flex; margin-top: 4rem">
-        <div v-for="content in channel.contents">
-          <img
-            v-if="content.class === 'Image'"
-            :src="content.image.square.url"
-            width="80"
-            lazy
-          />
-          <div v-else-if="content.class === 'Attachment'">
-            <n-image :src="content.image.square.url" width="80" lazy />
-          </div>
-          <div v-else>
-            <small style="font-size: 0.75rem; line-height: 1rem">
-              {{ content.content }}
-            </small>
-          </div>
-        </div>
-      </div> -->
     </template>
   </div>
 </template>
 
 <script setup>
 import Arena from "are.na";
-import { ref, onMounted, h } from "vue";
-import {
-  NSelect,
-  NTag,
-  NButton,
-  NTime,
-  NGrid,
-  NGridItem,
-  NImage,
-} from "naive-ui";
+import { ref, onMounted } from "vue";
+import { NSelect, NTag, NButton, NTime } from "naive-ui";
 
 const user = defineProps(["user"]);
 const channel = ref();
@@ -119,10 +92,6 @@ const setChannelAttributes = (attrs) => {
 };
 
 onMounted(() => fetchAllChannelsByUserID(user.user.user.id));
-
-// ----------------------------------------------------
-// All this shit is for fuzzy search
-// ----------------------------------------------------
 
 const search = ref(undefined);
 
