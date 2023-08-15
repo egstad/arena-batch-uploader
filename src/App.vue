@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRaw } from "vue";
+import { ref } from "vue";
 import { darkTheme } from "naive-ui";
 import { NConfigProvider } from "naive-ui";
 import SearchUser from "./components/SearchUser.vue";
@@ -17,7 +17,7 @@ const upload = ref(null);
 const themeOverrides = {
   common: {
     primaryColor: "#ffffff",
-    successColor: "#e24937",
+    successColor: "#2ba425",
     errorColor: "rgb(226, 73, 55)",
     textColor2: "var(--foreground)",
     borderColor: "var(--border)",
@@ -82,50 +82,61 @@ const themeOverrides = {
           <SearchUser ref="user" />
         </div>
 
-        <div class="row" v-if="user?.user">
-          <h2>
-            <span :class="[{ success: token?.token }, 'status-dot']"></span>
-            <span class="status-text">Access Token</span>
-          </h2>
+        <Transition>
+          <div class="row" v-if="user?.user">
+            <h2>
+              <span :class="[{ success: token?.token }, 'status-dot']"></span>
+              <span class="status-text">Access Token</span>
+            </h2>
 
-          <AccessToken ref="token" />
-        </div>
-
-        <div class="row" v-if="token?.token">
-          <h2>
-            <span :class="[{ success: channel?.channel }, 'status-dot']"></span>
-            <span class="status-text">Channel</span>
-          </h2>
-          <SearchChannel :user="user" ref="channel" />
-        </div>
-
-        <div class="row" v-if="channel?.channel">
-          <h2>
-            <span
-              :class="[{ success: file?.jsonData?.length }, 'status-dot']"
-            ></span>
-            <span class="status-text">File</span>
-          </h2>
-
-          <div>
-            <File ref="file" />
+            <AccessToken ref="token" />
           </div>
-        </div>
+        </Transition>
 
-        <div class="row" v-if="file?.jsonData?.length">
-          <h2>
-            <span>Connect to Are.na</span>
-          </h2>
-
-          <div>
-            <Upload
-              :json-data="file?.jsonData"
-              :channel="channel"
-              :access-token="token"
-              ref="upload"
-            />
+        <Transition>
+          <div class="row" v-if="token?.token">
+            <h2>
+              <span
+                :class="[{ success: channel?.channel }, 'status-dot']"
+              ></span>
+              <span class="status-text">Channel</span>
+            </h2>
+            <SearchChannel :user="user" ref="channel" />
           </div>
-        </div>
+        </Transition>
+
+        <Transition>
+          <div class="row" v-if="channel?.channel">
+            <h2>
+              <span
+                :class="[{ success: file?.jsonData?.length }, 'status-dot']"
+              ></span>
+              <span class="status-text">File</span>
+            </h2>
+
+            <div>
+              <File ref="file" />
+            </div>
+          </div>
+        </Transition>
+
+        <Transition>
+          <div class="row" v-if="file?.jsonData?.length">
+            <h2>
+              <span>Connect to Are.na</span>
+            </h2>
+
+            <div>
+              <Upload
+                :json-data="file?.jsonData"
+                :channel="channel"
+                :access-token="token"
+                :user="user"
+                ref="upload"
+              />
+            </div>
+          </div>
+        </Transition>
       </section>
     </main>
   </n-config-provider>
@@ -136,6 +147,7 @@ main {
   min-height: 100vh;
   width: 100%;
   font-size: 14px;
+  margin-bottom: 6rem;
 }
 
 .content {
@@ -175,8 +187,8 @@ main {
   }
 
   // right column
-  > *:last-child {
-  }
+  // > *:last-child {
+  // }
 
   // both columns
   > * {
@@ -225,5 +237,15 @@ main {
   &.success {
     background-color: green;
   }
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
