@@ -38,6 +38,18 @@ const themeOverrides = {
     // error
     borderError: "1px solid var(--error)",
   },
+  Select: {
+    borderHover: `1px solid var(--foreground)`,
+    peers: {
+      InternalSelection: {
+        borderHover: `1px solid var(--foreground)`,
+        borderFocus: `1px solid var(--foreground)`,
+      },
+      InternalSelectMenu: {
+        color: "var(--border)",
+      },
+    },
+  },
 };
 </script>
 
