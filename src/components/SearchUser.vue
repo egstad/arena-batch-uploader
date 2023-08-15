@@ -1,36 +1,51 @@
 <template>
   <div>
     <div style="display: flex">
-      <n-tooltip
-        placement="top-start"
-        trigger="manual"
-        :delay="100"
-        :duration="5000"
-      >
-        <template #trigger>
-          <n-input
-            autofocus
-            placeholder="john-doe"
-            :status="userValidityStatus"
-            :on-input="onUserInput"
-            :on-clear="onUserClear"
-            @keyup.enter="checkIfUserExists"
-            style="margin-right: 0.5rem"
-            clearable
-          >
-            <template #prefix>
-              <span style="opacity: 0.5; margin-right: -0.125rem"
-                >are.na/</span
-              ></template
-            ></n-input
-          >
-        </template>
-        {{ errorMessage }}
-      </n-tooltip>
+      <template v-if="!user">
+        <n-input
+          placeholder="john-doe"
+          :status="userValidityStatus"
+          :on-input="onUserInput"
+          :on-clear="onUserClear"
+          @keyup.enter="checkIfUserExists"
+          style="margin-right: 0.5rem"
+          clearable
+        >
+          <template #prefix>
+            <span style="opacity: 0.5; margin-right: -0.125rem"
+              >are.na/</span
+            ></template
+          ></n-input
+        >
 
-      <n-button :type="userValidityStatus" @click="checkIfUserExists"
-        >Search</n-button
-      >
+        <n-button
+          v-if="userInput"
+          :type="userValidityStatus"
+          @click="checkIfUserExists"
+          >Search</n-button
+        >
+      </template>
+      <template v-else>
+        <n-input
+          placeholder="john-doe"
+          :status="userValidityStatus"
+          :on-input="onUserInput"
+          :on-clear="onUserClear"
+          @keyup.enter="checkIfUserExists"
+          @clear="clearUser"
+          style="margin-right: 0.5rem"
+          :default-value="user.slug"
+          clearable
+        >
+          <template #prefix>
+            <span style="opacity: 0.5; margin-right: -0.125rem"
+              >are.na/</span
+            ></template
+          ></n-input
+        >
+
+        <!-- <n-button type="error" secondary @click="clearUser">Remove</n-button> -->
+      </template>
     </div>
 
     <div v-if="user" class="user-meta">
@@ -51,11 +66,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-import { NButton, NInput, NAvatar, NTag, NTime, NTooltip } from "naive-ui";
+import { ref, computed, onMounted } from "vue";
+import { NButton, NInput, NAvatar, NTag, NTime } from "naive-ui";
 import Arena from "are.na";
 
-const user = ref(null);
+const user = ref(undefined);
 const userInput = ref(undefined);
 const userIsValid = ref(undefined);
 const userIsLoading = ref(false);
@@ -63,6 +78,11 @@ const errorMessage = ref(null);
 
 defineExpose({
   user,
+});
+
+onMounted(() => {
+  if (!localStorage.user) return;
+  user.value = JSON.parse(localStorage.user);
 });
 
 const onUserInput = (userName) => {
@@ -78,7 +98,7 @@ const onUserClear = (ev) => {
 
 const checkIfUserExists = () => {
   userIsLoading.value = true;
-  const arena = new Arena({ accessToken: import.meta.env.VITE_ARENA_TOKEN });
+  const arena = new Arena();
 
   arena
     .user(userInput.value)
@@ -87,6 +107,7 @@ const checkIfUserExists = () => {
       userIsValid.value = true;
       user.value = userData;
       userIsLoading.value = false;
+      localStorage.setItem("user", JSON.stringify(userData));
     })
     .catch((err) => {
       user.value = undefined;
@@ -106,19 +127,26 @@ const userValidityStatus = computed(() => {
   // in case they haven't submitted anything yet.
   if (userIsValid.value === undefined) return undefined;
 
-  return userIsValid.value === true ? "success" : "error";
+  return userIsValid.value === true ? "default" : "error";
 
   // return userIsValid.value ? undefined : "error";
 });
+
+const clearUser = () => {
+  localStorage.removeItem("user");
+  user.value = undefined;
+};
 </script>
 
 <style scoped lang="scss">
 .user-meta {
   display: flex;
-  margin-top: 0.5rem;
+  flex-wrap: wrap;
 
   > * {
+    margin-top: 0.5rem;
     margin-right: 0.5rem;
+    display: inline-flex;
   }
 }
 </style>

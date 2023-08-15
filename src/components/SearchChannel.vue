@@ -9,7 +9,7 @@
         filterable
         clearable
       />&nbsp;
-      <n-button type="default" v-if="user?.user"
+      <n-button type="default" v-if="channel"
         ><a
           :href="`https://are.na/${user.user.user.slug}/${channel?.slug}`"
           target="_blank"
@@ -79,7 +79,7 @@ const channelsPerPage = 10;
 const currentPage = ref(1);
 const totalPages = ref(0);
 const totalChannels = ref(0);
-const arena = new Arena({ accessToken: import.meta.env.VITE_ARENA_TOKEN });
+const arena = new Arena({ accessToken: localStorage.token });
 
 const fetchAllChannelsByUserID = (userID) => {
   isLoading.value = true;
@@ -107,7 +107,7 @@ const fetchAllChannelsByUserID = (userID) => {
         return;
       } else {
         currentPage.value = contents.attrs.current_page + 1;
-        // fetchAllChannelsByUserID(userID);
+        fetchAllChannelsByUserID(userID);
       }
     })
     .catch((err) => console.log(err));
@@ -135,10 +135,12 @@ const handleUpdate = (newVal) => {
 <style scoped lang="scss">
 .channel-meta {
   display: flex;
-  margin-top: 0.5rem;
+  flex-wrap: wrap;
 
   > * {
+    margin-top: 0.5rem;
     margin-right: 0.5rem;
+    display: inline-flex;
   }
 }
 </style>

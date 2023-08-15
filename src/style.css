@@ -3,8 +3,10 @@
   line-height: 1.5rem;
 
   --background: black;
-  --foreground: rgba(200, 200, 200);
-  --border: rgba(70, 65, 65);
+  --foreground: #d3d3d3;
+  --border: #232323;
+  --error: #e24937;
+  --success: #2ba425;
 
   background: var(--background);
   color: var(--foreground);

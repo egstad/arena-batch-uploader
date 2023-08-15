@@ -1,17 +1,28 @@
 <template>
   <div>
     <n-upload
-      directory-dnd
       :max="1"
       accept="application/JSON"
       @input="onInput($event)"
-      @remove="jsonData = undefined"
+      @remove="jsonData = []"
+      status="pending"
     >
       <n-upload-dragger>
-        <p>Click or drag a single JSON file here.</p>
         <p>
-          This file should contain an array of objects. Each object accepts a
-          title, description, and content property.
+          <span v-if="!jsonData.length"
+            >Click or drag a single JSON file here.</span
+          >
+          <span v-else>File Added</span>
+        </p>
+        <p style="opacity: 0.5">
+          <span v-if="!jsonData.length"
+            >This file should contain an array of objects. Each object accepts a
+            title, description, and content property.</span
+          >
+          <span v-else
+            >Select the wrong file? Remove the attachment below to try
+            again.</span
+          >
         </p>
       </n-upload-dragger>
     </n-upload>
@@ -60,25 +71,4 @@ watch(jsonData, (newValue) => {
     jsonError.value = `Error found on index ${index}. This is likely due to the fact that the object doesn't include a 'content' property or this property is not a string. Please correct before proceeding.`;
   });
 });
-
-// const columns = [
-//   {
-//     title: "Title",
-//     key: "title",
-//   },
-// ];
-
-// const pagination = reactive({
-//   page: 1,
-//   pageSize: 4,
-//   // showSizePicker: true,
-//   // pageSizes: [3, 5, 7],
-//   onChange: (page) => {
-//     pagination.page = page;
-//   },
-//   onUpdatePageSize: (pageSize) => {
-//     pagination.pageSize = pageSize;
-//     pagination.page = 1;
-//   },
-// });
 </script>
