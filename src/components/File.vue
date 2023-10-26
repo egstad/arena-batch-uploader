@@ -70,8 +70,8 @@ watch(jsonData, (newValue) => {
     )
       return;
 
-    jsonHasError.value = true;
-    jsonError.value = `Error found on index ${index}. This is likely due to the fact that the object doesn't include a 'content' property or this property is not a string. Please correct before proceeding.`;
+    // jsonHasError.value = true;
+    // jsonError.value = `Error found on index ${index}. This is likely due to the fact that the object doesn't include a 'content' property or this property is not a string. Please correct before proceeding.`;
   });
 });
 </script>
