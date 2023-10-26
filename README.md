@@ -14,8 +14,8 @@ Now that that's out of the way... To use this tool, you'll only need one thing: 
 [
   {
     "title": "title here!",
-    "description": "add text here!",
-    "content": "add a url or text here!"
+    "description": "text here!",
+    "content": "url/text here!"
   },
   ... more objects
 ]

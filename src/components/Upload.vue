@@ -120,7 +120,6 @@ const createBlock = async (channel, block, index) => {
   if (!uploading.value) return;
 
   // otherwise, go for it!
-  await timer(throttleDuration.value);
   await arena
     .block()
     .create(channel, block)
@@ -137,7 +136,10 @@ const createBlock = async (channel, block, index) => {
         error: err,
         payload: block,
       });
+
+      uploading.value = false;
     });
+  await timer(throttleDuration.value);
   downloaded.value++;
 };
 
