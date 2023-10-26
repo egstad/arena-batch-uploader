@@ -64,10 +64,11 @@ const onInput = (ev) => {
 
 watch(jsonData, (newValue) => {
   newValue.some((obj, index) => {
-    if (obj.hasOwnProperty("content") && typeof obj.content === "string")
+    if (
+      (obj.hasOwnProperty("content") && typeof obj.content === "string") ||
+      (obj.hasOwnProperty("source") && typeof obj.content === "string")
+    )
       return;
-
-    if (obj.hasOwnProperty("source") && typeof obj.content === "string") return;
 
     jsonHasError.value = true;
     jsonError.value = `Error found on index ${index}. This is likely due to the fact that the object doesn't include a 'content' property or this property is not a string. Please correct before proceeding.`;
