@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { darkTheme } from "naive-ui";
 import { NConfigProvider } from "naive-ui";
 import SearchUser from "./components/SearchUser.vue";
@@ -7,12 +7,43 @@ import SearchChannel from "./components/SearchChannel.vue";
 import AccessToken from "./components/AccessToken.vue";
 import File from "./components/File.vue";
 import Upload from "./components/Upload.vue";
+import { exchangeCodeForToken } from "./arena-oauth.js";
+import { getMe } from "./arena-api.js";
 
 const user = ref(null);
 const channel = ref(null);
 const token = ref(null);
 const file = ref(null);
 const upload = ref(null);
+
+// True while we're exchanging an OAuth code — keeps child components from
+// mounting before localStorage is populated with the fresh token + user.
+const oauthLoading = ref(false);
+const oauthError = ref('');
+
+// Grab the ?code= before anything renders so we can gate on it.
+const oauthCode = new URLSearchParams(window.location.search).get('code');
+if (oauthCode) {
+  oauthLoading.value = true;
+  // Remove the code from the URL immediately so a refresh doesn't re-use it.
+  window.history.replaceState({}, '', window.location.pathname);
+}
+
+onMounted(async () => {
+  if (!oauthCode) return;
+
+  try {
+    const accessToken = await exchangeCodeForToken(oauthCode);
+    localStorage.setItem('token', accessToken);
+
+    const me = await getMe(accessToken);
+    localStorage.setItem('user', JSON.stringify(me));
+  } catch (err) {
+    oauthError.value = String(err.message || err);
+  } finally {
+    oauthLoading.value = false;
+  }
+});
 
 const themeOverrides = {
   common: {
@@ -74,69 +105,85 @@ const themeOverrides = {
           </div>
         </header>
 
-        <div class="row">
-          <h2>
-            <span :class="[{ success: user?.user }, 'status-dot']"></span>
-            <span class="status-text">Username</span>
-          </h2>
-          <SearchUser ref="user" />
-        </div>
-
-        <Transition>
-          <div class="row" v-if="user?.user">
-            <h2>
-              <span :class="[{ success: token?.token }, 'status-dot']"></span>
-              <span class="status-text">Access Token</span>
-            </h2>
-
-            <AccessToken ref="token" />
+        <template v-if="oauthLoading">
+          <div class="row">
+            <p style="opacity: 0.6; padding: 14px 0">Connecting to Are.na…</p>
           </div>
-        </Transition>
+        </template>
 
-        <Transition>
-          <div class="row" v-if="token?.token">
-            <h2>
-              <span
-                :class="[{ success: channel?.channel }, 'status-dot']"
-              ></span>
-              <span class="status-text">Channel</span>
-            </h2>
-            <SearchChannel :user="user" ref="channel" />
+        <template v-else-if="oauthError">
+          <div class="row">
+            <p style="color: var(--error); padding: 14px 0">
+              OAuth error: {{ oauthError }}
+            </p>
           </div>
-        </Transition>
+        </template>
 
-        <Transition>
-          <div class="row" v-if="channel?.channel">
+        <template v-else>
+          <div class="row">
             <h2>
-              <span
-                :class="[{ success: file?.jsonData?.length }, 'status-dot']"
-              ></span>
-              <span class="status-text">File</span>
+              <span :class="[{ success: user?.user }, 'status-dot']"></span>
+              <span class="status-text">Username</span>
             </h2>
+            <SearchUser ref="user" />
+          </div>
 
-            <div>
-              <File ref="file" />
+          <Transition>
+            <div class="row" v-if="user?.user">
+              <h2>
+                <span :class="[{ success: token?.token }, 'status-dot']"></span>
+                <span class="status-text">Access Token</span>
+              </h2>
+
+              <AccessToken ref="token" />
             </div>
-          </div>
-        </Transition>
+          </Transition>
 
-        <Transition>
-          <div class="row" v-if="file?.jsonData?.length">
-            <h2>
-              <span>Connect to Are.na</span>
-            </h2>
-
-            <div>
-              <Upload
-                :json-data="file?.jsonData"
-                :channel="channel"
-                :access-token="token"
-                :user="user"
-                ref="upload"
-              />
+          <Transition>
+            <div class="row" v-if="token?.token">
+              <h2>
+                <span
+                  :class="[{ success: channel?.channel }, 'status-dot']"
+                ></span>
+                <span class="status-text">Channel</span>
+              </h2>
+              <SearchChannel :user="user" ref="channel" />
             </div>
-          </div>
-        </Transition>
+          </Transition>
+
+          <Transition>
+            <div class="row" v-if="channel?.channel">
+              <h2>
+                <span
+                  :class="[{ success: file?.jsonData?.length }, 'status-dot']"
+                ></span>
+                <span class="status-text">File</span>
+              </h2>
+
+              <div>
+                <File ref="file" />
+              </div>
+            </div>
+          </Transition>
+
+          <Transition>
+            <div class="row" v-if="file?.jsonData?.length">
+              <h2>
+                <span>Connect to Are.na</span>
+              </h2>
+
+              <div>
+                <Upload
+                  :json-data="file?.jsonData"
+                  :channel="channel"
+                  :access-token="token"
+                  :user="user"
+                  ref="upload"
+                />
+              </div>
+            </div>
+          </Transition>
+        </template>
       </section>
     </main>
   </n-config-provider>

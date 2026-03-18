@@ -9,7 +9,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "are.na": "^0.1.5",
     "vue": "^3.3.4"
   },
   "devDependencies": {

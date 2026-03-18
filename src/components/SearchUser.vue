@@ -70,7 +70,7 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { NButton, NInput, NAvatar, NTag, NTime } from "naive-ui";
-import Arena from "are.na";
+import { getUser } from "../arena-api.js";
 
 const user = ref(undefined);
 const userInput = ref(undefined);
@@ -100,11 +100,8 @@ const onUserClear = (ev) => {
 
 const checkIfUserExists = () => {
   userIsLoading.value = true;
-  const arena = new Arena();
 
-  arena
-    .user(userInput.value)
-    .get()
+  getUser(userInput.value)
     .then((userData) => {
       userIsValid.value = true;
       user.value = userData;

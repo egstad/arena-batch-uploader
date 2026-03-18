@@ -96,9 +96,8 @@ import {
   NInputGroup,
   NDataTable,
 } from "naive-ui";
-import Arena from "are.na";
+import { createBlock as arenaCreateBlock } from "../arena-api.js";
 
-const arena = new Arena({ accessToken: localStorage.token });
 const payload = defineProps(["json-data", "channel", "accessToken", "user"]);
 const downloaded = ref(0);
 const successes = ref([]);
@@ -116,18 +115,14 @@ const upload = async (channel) => {
 };
 
 const createBlock = async (channel, block, index) => {
-  // if uploading is pause, stop.
   if (!uploading.value) return;
 
-  // otherwise, go for it!
-  await arena
-    .block()
-    .create(channel, block)
-    .then(async (block) => {
+  await arenaCreateBlock(channel, block, localStorage.token)
+    .then((created) => {
       addToStatusArrays(successes.value, {
-        id: block.id,
-        created_at: block.connected_at,
-        title: block.title,
+        id: created.id,
+        created_at: created.created_at,
+        title: created.title,
         index: index,
       });
     })
